@@ -1,0 +1,24 @@
+services:
+  movie-database:
+    image: postgres:18.3
+
+    environment:
+      POSTGRES_DB: moviedb
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - movie_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d moviedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  movie_data:
